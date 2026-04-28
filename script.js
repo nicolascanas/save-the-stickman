@@ -14,6 +14,7 @@ let selectedWord = "";
 let revealedLetters = [];
 let usedLetters = [];
 let wrongGuesses = 0;
+let gameOver = false;
 
 // Estados visuais da forca
 const hangmanStages = [
@@ -81,6 +82,7 @@ function startGame() {
   revealedLetters = selectedWord.split("").map(() => "_");
   usedLetters = [];
   wrongGuesses = 0;
+  gameOver = false;
 
   renderWord();
   renderKeyboard();
@@ -122,7 +124,7 @@ function renderKeyboard() {
 }
 
 function handleLetterClick(letter, keyElement) {
-  if (usedLetters.includes(letter)) return;
+  if (usedLetters.includes(letter) || gameOver) return;
 
   usedLetters.push(letter);
   keyElement.classList.add("used");
@@ -135,10 +137,28 @@ function handleLetterClick(letter, keyElement) {
     });
 
     renderWord();
+
+    checkWin();
   } else {
     wrongGuesses++;
     renderHangman();
+
+    checkLoss();
   }
 
   renderUsedLetters();
+}
+
+function checkWin() {
+  if (!revealedLetters.includes("_")) {
+    gameOver = true;
+    setTimeout(() => alert("Você venceu!"), 100);
+  }
+}
+
+function checkLoss() {
+  if (wrongGuesses === 6) {
+    gameOver = true;
+    setTimeout(() => alert(`Game Over! A palavra era: ${selectedWord}`), 100);
+  }
 }
