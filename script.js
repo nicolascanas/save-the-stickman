@@ -6,17 +6,14 @@ const bottomBar = document.getElementById("bottom-bar");
 const lettersList = document.getElementById("letters-list");
 const hangman = document.getElementById("hangman");
 
-// Game Over
 const gameOverScreen = document.getElementById("game-over-screen");
 const gameResult = document.getElementById("game-result");
 const finalWord = document.getElementById("final-word");
 const resetBtn = document.getElementById("reset-btn");
 const homeBtn = document.getElementById("home-btn");
 
-// Lista de palavras
 const words = ["JAVASCRIPT", "PROGRAMACAO", "DESENVOLVIMENTO", "COMPUTADOR"];
 
-// Estado
 let selectedWord = "";
 let revealedLetters = [];
 let usedLetters = [];
@@ -40,12 +37,12 @@ startBtn.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", () => {
-  gameOverScreen.classList.add("hidden");
+  hideOverlay();
   startGame();
 });
 
 homeBtn.addEventListener("click", () => {
-  gameOverScreen.classList.add("hidden");
+  hideOverlay();
   gameScreen.classList.remove("active");
   homeScreen.classList.add("active");
 });
@@ -65,6 +62,9 @@ function startGame() {
 
 function renderWord() {
   wordDisplay.textContent = revealedLetters.join(" ");
+  wordDisplay.classList.add("reveal");
+
+  setTimeout(() => wordDisplay.classList.remove("reveal"), 200);
 }
 
 function renderUsedLetters() {
@@ -105,9 +105,7 @@ function handleLetterClick(letter, keyElement) {
     keyElement.classList.add("correct");
 
     selectedWord.split("").forEach((char, index) => {
-      if (char === letter) {
-        revealedLetters[index] = letter;
-      }
+      if (char === letter) revealedLetters[index] = letter;
     });
 
     renderWord();
@@ -117,6 +115,11 @@ function handleLetterClick(letter, keyElement) {
 
     wrongGuesses++;
     renderHangman();
+
+    // animação de erro
+    hangman.classList.add("shake");
+    setTimeout(() => hangman.classList.remove("shake"), 200);
+
     checkLoss();
   }
 
@@ -140,6 +143,10 @@ function checkLoss() {
 function showGameOver(win) {
   gameOverScreen.classList.remove("hidden");
 
+  setTimeout(() => {
+    gameOverScreen.classList.add("show");
+  }, 10);
+
   if (win) {
     gameResult.textContent = "Você venceu!";
     finalWord.textContent = "";
@@ -147,4 +154,11 @@ function showGameOver(win) {
     gameResult.textContent = "Game Over!";
     finalWord.textContent = `Palavra: ${selectedWord}`;
   }
+}
+
+function hideOverlay() {
+  gameOverScreen.classList.remove("show");
+  setTimeout(() => {
+    gameOverScreen.classList.add("hidden");
+  }, 400);
 }

@@ -11,16 +11,23 @@ body {
   height: 100vh;
 }
 
+/* Transição entre telas */
 .screen {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   flex-direction: column;
 }
 
 .screen.active {
-  display: flex;
+  opacity: 1;
+  pointer-events: all;
 }
 
 button {
@@ -39,12 +46,23 @@ button {
   margin-bottom: 20px;
   white-space: pre;
   font-size: 20px;
+  transition: transform 0.2s;
 }
 
 #word-display {
   font-size: 32px;
   letter-spacing: 10px;
   margin-bottom: 20px;
+}
+
+/* Animação ao revelar */
+.reveal {
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 #used-letters {
@@ -76,35 +94,56 @@ button {
   cursor: pointer;
   width: 35px;
   text-align: center;
+  transition: transform 0.1s;
+}
+
+.key:hover {
+  transform: scale(1.1);
 }
 
 .key.used {
   cursor: not-allowed;
 }
 
-/* NOVO: feedback visual */
 .key.correct {
   background-color: green;
-  color: white;
 }
 
 .key.wrong {
   background-color: red;
-  color: white;
 }
 
-/* Overlay */
+/* Shake ao errar */
+.shake {
+  animation: shake 0.2s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* Overlay fade */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0,0,0,0.9);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.overlay.show {
+  opacity: 1;
 }
 
 .hidden {
