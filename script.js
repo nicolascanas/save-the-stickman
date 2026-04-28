@@ -10,6 +10,11 @@ const scoreDisplay = document.getElementById("score-display");
 const scoreDisplayGame = document.getElementById("score-display-game");
 const finalScore = document.getElementById("final-score");
 
+const leaderboardElement = document.getElementById("leaderboard");
+
+const playerNameInput = document.getElementById("player-name");
+const saveScoreBtn = document.getElementById("save-score-btn");
+
 const gameOverScreen = document.getElementById("game-over-screen");
 const gameResult = document.getElementById("game-result");
 const finalWord = document.getElementById("final-word");
@@ -31,8 +36,10 @@ let usedLetters = [];
 let wrongGuesses = 0;
 let gameOver = false;
 
-// 🎯 NOVO: pontuação
 let score = Number(localStorage.getItem("hangmanScore")) || 0;
+
+// 🎯 NOVO: leaderboard
+let leaderboard = JSON.parse(localStorage.getItem("hangmanLeaderboard")) || [];
 
 const hangmanStages = [
   ``,
@@ -44,16 +51,40 @@ const hangmanStages = [
   ` O\n/|\\\n/ \\`
 ];
 
-// Atualiza score na UI
 function updateScoreDisplay() {
   scoreDisplay.textContent = `Pontuação: ${score}`;
   scoreDisplayGame.textContent = `Pontuação: ${score}`;
 }
 
-// Salvar score
 function saveScore() {
   localStorage.setItem("hangmanScore", score);
 }
+
+// 🎯 render ranking
+function renderLeaderboard() {
+  leaderboardElement.innerHTML = "";
+
+  leaderboard.forEach(entry => {
+    const li = document.createElement("li");
+    li.textContent = `${entry.name} - ${entry.score}`;
+    leaderboardElement.appendChild(li);
+  });
+}
+
+// 🎯 salvar no ranking
+saveScoreBtn.addEventListener("click", () => {
+  const name = playerNameInput.value.trim() || "Jogador";
+
+  leaderboard.push({ name, score });
+
+  leaderboard.sort((a, b) => b.score - a.score);
+  leaderboard = leaderboard.slice(0, 5);
+
+  localStorage.setItem("hangmanLeaderboard", JSON.stringify(leaderboard));
+
+  renderLeaderboard();
+  playerNameInput.value = "";
+});
 
 categoryButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -74,6 +105,7 @@ homeBtn.addEventListener("click", () => {
   gameScreen.classList.remove("active");
   homeScreen.classList.add("active");
   updateScoreDisplay();
+  renderLeaderboard();
 });
 
 function startGame() {
@@ -157,7 +189,7 @@ function handleLetterClick(letter, keyElement) {
     keyElement.classList.add("wrong");
 
     wrongGuesses++;
-    score = Math.max(0, score - 1); // penalidade
+    score = Math.max(0, score - 1);
     saveScore();
 
     renderHangman();
@@ -209,5 +241,6 @@ function hideOverlay() {
   }, 400);
 }
 
-// inicializar score na home
+// inicialização
 updateScoreDisplay();
+renderLeaderboard();
