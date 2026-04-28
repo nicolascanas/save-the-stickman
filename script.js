@@ -102,6 +102,8 @@ function handleLetterClick(letter, keyElement) {
   keyElement.classList.add("used");
 
   if (selectedWord.includes(letter)) {
+    keyElement.classList.add("correct");
+
     selectedWord.split("").forEach((char, index) => {
       if (char === letter) {
         revealedLetters[index] = letter;
@@ -111,6 +113,8 @@ function handleLetterClick(letter, keyElement) {
     renderWord();
     checkWin();
   } else {
+    keyElement.classList.add("wrong");
+
     wrongGuesses++;
     renderHangman();
     checkLoss();

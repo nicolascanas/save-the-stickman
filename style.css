@@ -79,11 +79,21 @@ button {
 }
 
 .key.used {
-  background: gray;
   cursor: not-allowed;
 }
 
-/* Overlay de Game Over */
+/* NOVO: feedback visual */
+.key.correct {
+  background-color: green;
+  color: white;
+}
+
+.key.wrong {
+  background-color: red;
+  color: white;
+}
+
+/* Overlay */
 .overlay {
   position: fixed;
   top: 0;
