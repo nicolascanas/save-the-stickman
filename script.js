@@ -4,6 +4,7 @@ const startBtn = document.getElementById("start-btn");
 const wordDisplay = document.getElementById("word-display");
 const bottomBar = document.getElementById("bottom-bar");
 const lettersList = document.getElementById("letters-list");
+const hangman = document.getElementById("hangman");
 
 // Lista de palavras
 const words = ["JAVASCRIPT", "PROGRAMACAO", "DESENVOLVIMENTO", "COMPUTADOR"];
@@ -13,6 +14,59 @@ let selectedWord = "";
 let revealedLetters = [];
 let usedLetters = [];
 let wrongGuesses = 0;
+
+// Estados visuais da forca
+const hangmanStages = [
+  `
+  
+  
+  
+  
+  
+  `,
+  `
+   O
+  
+  
+  
+  
+  `,
+  `
+   O
+   |
+  
+  
+  
+  `,
+  `
+   O
+  /|
+  
+  
+  
+  `,
+  `
+   O
+  /|\\
+  
+  
+  
+  `,
+  `
+   O
+  /|\\
+  /
+  
+  
+  `,
+  `
+   O
+  /|\\
+  / \\
+  
+  
+  `
+];
 
 // Iniciar jogo
 startBtn.addEventListener("click", () => {
@@ -31,6 +85,7 @@ function startGame() {
   renderWord();
   renderKeyboard();
   renderUsedLetters();
+  renderHangman();
 }
 
 function renderWord() {
@@ -39,6 +94,10 @@ function renderWord() {
 
 function renderUsedLetters() {
   lettersList.textContent = usedLetters.join(" ");
+}
+
+function renderHangman() {
+  hangman.textContent = hangmanStages[wrongGuesses];
 }
 
 function renderKeyboard() {
@@ -69,7 +128,6 @@ function handleLetterClick(letter, keyElement) {
   keyElement.classList.add("used");
 
   if (selectedWord.includes(letter)) {
-    // Acerto → revelar letras
     selectedWord.split("").forEach((char, index) => {
       if (char === letter) {
         revealedLetters[index] = letter;
@@ -78,9 +136,8 @@ function handleLetterClick(letter, keyElement) {
 
     renderWord();
   } else {
-    // Erro
     wrongGuesses++;
-    console.log("Erros:", wrongGuesses);
+    renderHangman();
   }
 
   renderUsedLetters();

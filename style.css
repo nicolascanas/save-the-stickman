@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: monospace;
 }
 
 body {
@@ -36,6 +36,8 @@ button {
 #hangman {
   height: 200px;
   margin-bottom: 20px;
+  white-space: pre;
+  font-size: 20px;
 }
 
 #word-display {
