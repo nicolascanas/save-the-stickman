@@ -6,6 +6,10 @@ const lettersList = document.getElementById("letters-list");
 const hangman = document.getElementById("hangman");
 const categoryTitle = document.getElementById("category-title");
 
+const scoreDisplay = document.getElementById("score-display");
+const scoreDisplayGame = document.getElementById("score-display-game");
+const finalScore = document.getElementById("final-score");
+
 const gameOverScreen = document.getElementById("game-over-screen");
 const gameResult = document.getElementById("game-result");
 const finalWord = document.getElementById("final-word");
@@ -14,7 +18,6 @@ const homeBtn = document.getElementById("home-btn");
 
 const categoryButtons = document.querySelectorAll("#category-buttons button");
 
-// 🎯 NOVO: categorias
 const categories = {
   tecnologia: ["JAVASCRIPT", "COMPUTADOR", "ALGORITMO", "INTERNET"],
   animais: ["ELEFANTE", "GIRAFA", "CACHORRO", "TIGRE"],
@@ -28,6 +31,9 @@ let usedLetters = [];
 let wrongGuesses = 0;
 let gameOver = false;
 
+// 🎯 NOVO: pontuação
+let score = Number(localStorage.getItem("hangmanScore")) || 0;
+
 const hangmanStages = [
   ``,
   ` O`,
@@ -38,14 +44,22 @@ const hangmanStages = [
   ` O\n/|\\\n/ \\`
 ];
 
-// Seleção de categoria
+// Atualiza score na UI
+function updateScoreDisplay() {
+  scoreDisplay.textContent = `Pontuação: ${score}`;
+  scoreDisplayGame.textContent = `Pontuação: ${score}`;
+}
+
+// Salvar score
+function saveScore() {
+  localStorage.setItem("hangmanScore", score);
+}
+
 categoryButtons.forEach(button => {
   button.addEventListener("click", () => {
     selectedCategory = button.dataset.category;
-
     homeScreen.classList.remove("active");
     gameScreen.classList.add("active");
-
     startGame();
   });
 });
@@ -59,6 +73,7 @@ homeBtn.addEventListener("click", () => {
   hideOverlay();
   gameScreen.classList.remove("active");
   homeScreen.classList.add("active");
+  updateScoreDisplay();
 });
 
 function startGame() {
@@ -76,12 +91,11 @@ function startGame() {
   renderKeyboard();
   renderUsedLetters();
   renderHangman();
+  updateScoreDisplay();
 }
 
 function renderWord() {
   wordDisplay.textContent = revealedLetters.join(" ");
-  wordDisplay.classList.add("reveal");
-  setTimeout(() => wordDisplay.classList.remove("reveal"), 200);
 }
 
 function renderUsedLetters() {
@@ -106,14 +120,12 @@ function renderKeyboard() {
     key.dataset.letter = letter;
 
     key.addEventListener("click", () => handleLetterClick(letter, key));
-
     keyboard.appendChild(key);
   });
 
   bottomBar.appendChild(keyboard);
 }
 
-// teclado físico
 document.addEventListener("keydown", (event) => {
   if (gameOver) return;
 
@@ -145,11 +157,11 @@ function handleLetterClick(letter, keyElement) {
     keyElement.classList.add("wrong");
 
     wrongGuesses++;
+    score = Math.max(0, score - 1); // penalidade
+    saveScore();
+
     renderHangman();
-
-    hangman.classList.add("shake");
-    setTimeout(() => hangman.classList.remove("shake"), 200);
-
+    updateScoreDisplay();
     checkLoss();
   }
 
@@ -159,6 +171,8 @@ function handleLetterClick(letter, keyElement) {
 function checkWin() {
   if (!revealedLetters.includes("_")) {
     gameOver = true;
+    score += 10;
+    saveScore();
     showGameOver(true);
   }
 }
@@ -177,6 +191,8 @@ function showGameOver(win) {
     gameOverScreen.classList.add("show");
   }, 10);
 
+  finalScore.textContent = `Pontuação atual: ${score}`;
+
   if (win) {
     gameResult.textContent = "Você venceu!";
     finalWord.textContent = "";
@@ -192,3 +208,6 @@ function hideOverlay() {
     gameOverScreen.classList.add("hidden");
   }, 400);
 }
+
+// inicializar score na home
+updateScoreDisplay();

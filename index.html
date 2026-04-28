@@ -17,11 +17,14 @@
       <button data-category="animais">Animais</button>
       <button data-category="paises">Países</button>
     </div>
+
+    <h3 id="score-display">Pontuação: 0</h3>
   </div>
 
   <!-- Game -->
   <div id="game-screen" class="screen">
     <h2 id="category-title"></h2>
+    <h3 id="score-display-game">Pontuação: 0</h3>
 
     <div id="game-container">
       <div id="hangman"></div>
@@ -40,6 +43,7 @@
   <div id="game-over-screen" class="overlay hidden">
     <h2 id="game-result"></h2>
     <p id="final-word"></p>
+    <p id="final-score"></p>
     <button id="reset-btn">Jogar novamente</button>
     <button id="home-btn">Voltar para Home</button>
   </div>
