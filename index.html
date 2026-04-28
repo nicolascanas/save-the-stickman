@@ -7,28 +7,36 @@
 </head>
 <body>
 
+  <!-- Home -->
   <div id="home-screen" class="screen active">
     <h1>Jogo da Forca</h1>
-    <button id="start-btn">Start</button>
+
+    <p>Escolha uma categoria:</p>
+    <div id="category-buttons">
+      <button data-category="tecnologia">Tecnologia</button>
+      <button data-category="animais">Animais</button>
+      <button data-category="paises">Países</button>
+    </div>
   </div>
 
+  <!-- Game -->
   <div id="game-screen" class="screen">
-    <div id="game-container">
-      
-      <div id="hangman"></div>
+    <h2 id="category-title"></h2>
 
+    <div id="game-container">
+      <div id="hangman"></div>
       <div id="word-display"></div>
 
       <div id="used-letters">
         <h3>Letras usadas:</h3>
         <span id="letters-list"></span>
       </div>
-
     </div>
 
     <div id="bottom-bar"></div>
   </div>
 
+  <!-- Game Over -->
   <div id="game-over-screen" class="overlay hidden">
     <h2 id="game-result"></h2>
     <p id="final-word"></p>

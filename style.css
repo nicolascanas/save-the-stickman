@@ -149,3 +149,9 @@ button {
 .hidden {
   display: none;
 }
+
+#category-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}

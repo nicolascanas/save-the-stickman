@@ -1,10 +1,10 @@
 const homeScreen = document.getElementById("home-screen");
 const gameScreen = document.getElementById("game-screen");
-const startBtn = document.getElementById("start-btn");
 const wordDisplay = document.getElementById("word-display");
 const bottomBar = document.getElementById("bottom-bar");
 const lettersList = document.getElementById("letters-list");
 const hangman = document.getElementById("hangman");
+const categoryTitle = document.getElementById("category-title");
 
 const gameOverScreen = document.getElementById("game-over-screen");
 const gameResult = document.getElementById("game-result");
@@ -12,8 +12,16 @@ const finalWord = document.getElementById("final-word");
 const resetBtn = document.getElementById("reset-btn");
 const homeBtn = document.getElementById("home-btn");
 
-const words = ["JAVASCRIPT", "PROGRAMACAO", "DESENVOLVIMENTO", "COMPUTADOR"];
+const categoryButtons = document.querySelectorAll("#category-buttons button");
 
+// 🎯 NOVO: categorias
+const categories = {
+  tecnologia: ["JAVASCRIPT", "COMPUTADOR", "ALGORITMO", "INTERNET"],
+  animais: ["ELEFANTE", "GIRAFA", "CACHORRO", "TIGRE"],
+  paises: ["BRASIL", "CANADA", "JAPAO", "ALEMANHA"]
+};
+
+let selectedCategory = "";
 let selectedWord = "";
 let revealedLetters = [];
 let usedLetters = [];
@@ -30,10 +38,16 @@ const hangmanStages = [
   ` O\n/|\\\n/ \\`
 ];
 
-startBtn.addEventListener("click", () => {
-  homeScreen.classList.remove("active");
-  gameScreen.classList.add("active");
-  startGame();
+// Seleção de categoria
+categoryButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+
+    homeScreen.classList.remove("active");
+    gameScreen.classList.add("active");
+
+    startGame();
+  });
 });
 
 resetBtn.addEventListener("click", () => {
@@ -48,11 +62,15 @@ homeBtn.addEventListener("click", () => {
 });
 
 function startGame() {
+  const words = categories[selectedCategory];
   selectedWord = words[Math.floor(Math.random() * words.length)];
+
   revealedLetters = selectedWord.split("").map(() => "_");
   usedLetters = [];
   wrongGuesses = 0;
   gameOver = false;
+
+  categoryTitle.textContent = `Categoria: ${selectedCategory.toUpperCase()}`;
 
   renderWord();
   renderKeyboard();
@@ -95,20 +113,14 @@ function renderKeyboard() {
   bottomBar.appendChild(keyboard);
 }
 
-function getKeyElement(letter) {
-  return document.querySelector(`.key[data-letter="${letter}"]`);
-}
-
-// 🎯 NOVO: suporte ao teclado físico
+// teclado físico
 document.addEventListener("keydown", (event) => {
   if (gameOver) return;
 
   const letter = event.key.toUpperCase();
-
   if (!/^[A-Z]$/.test(letter)) return;
 
-  const keyElement = getKeyElement(letter);
-
+  const keyElement = document.querySelector(`.key[data-letter="${letter}"]`);
   if (!keyElement) return;
 
   handleLetterClick(letter, keyElement);
