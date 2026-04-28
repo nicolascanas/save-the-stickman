@@ -63,7 +63,6 @@ function startGame() {
 function renderWord() {
   wordDisplay.textContent = revealedLetters.join(" ");
   wordDisplay.classList.add("reveal");
-
   setTimeout(() => wordDisplay.classList.remove("reveal"), 200);
 }
 
@@ -86,6 +85,7 @@ function renderKeyboard() {
     const key = document.createElement("div");
     key.textContent = letter;
     key.classList.add("key");
+    key.dataset.letter = letter;
 
     key.addEventListener("click", () => handleLetterClick(letter, key));
 
@@ -94,6 +94,25 @@ function renderKeyboard() {
 
   bottomBar.appendChild(keyboard);
 }
+
+function getKeyElement(letter) {
+  return document.querySelector(`.key[data-letter="${letter}"]`);
+}
+
+// 🎯 NOVO: suporte ao teclado físico
+document.addEventListener("keydown", (event) => {
+  if (gameOver) return;
+
+  const letter = event.key.toUpperCase();
+
+  if (!/^[A-Z]$/.test(letter)) return;
+
+  const keyElement = getKeyElement(letter);
+
+  if (!keyElement) return;
+
+  handleLetterClick(letter, keyElement);
+});
 
 function handleLetterClick(letter, keyElement) {
   if (usedLetters.includes(letter) || gameOver) return;
@@ -116,7 +135,6 @@ function handleLetterClick(letter, keyElement) {
     wrongGuesses++;
     renderHangman();
 
-    // animação de erro
     hangman.classList.add("shake");
     setTimeout(() => hangman.classList.remove("shake"), 200);
 
