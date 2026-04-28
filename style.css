@@ -48,6 +48,7 @@ button {
   margin-bottom: 20px;
 }
 
+/* Barra inferior */
 #bottom-bar {
   position: absolute;
   bottom: 0;
@@ -56,4 +57,27 @@ button {
   color: black;
   padding: 15px;
   text-align: center;
+}
+
+/* Teclado */
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.key {
+  padding: 10px;
+  background: black;
+  color: white;
+  border: 1px solid white;
+  cursor: pointer;
+  width: 35px;
+  text-align: center;
+}
+
+.key.used {
+  background: gray;
+  cursor: not-allowed;
 }
