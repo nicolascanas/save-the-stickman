@@ -6,75 +6,48 @@ const bottomBar = document.getElementById("bottom-bar");
 const lettersList = document.getElementById("letters-list");
 const hangman = document.getElementById("hangman");
 
+// Game Over
+const gameOverScreen = document.getElementById("game-over-screen");
+const gameResult = document.getElementById("game-result");
+const finalWord = document.getElementById("final-word");
+const resetBtn = document.getElementById("reset-btn");
+const homeBtn = document.getElementById("home-btn");
+
 // Lista de palavras
 const words = ["JAVASCRIPT", "PROGRAMACAO", "DESENVOLVIMENTO", "COMPUTADOR"];
 
-// Estado do jogo
+// Estado
 let selectedWord = "";
 let revealedLetters = [];
 let usedLetters = [];
 let wrongGuesses = 0;
 let gameOver = false;
 
-// Estados visuais da forca
 const hangmanStages = [
-  `
-  
-  
-  
-  
-  
-  `,
-  `
-   O
-  
-  
-  
-  
-  `,
-  `
-   O
-   |
-  
-  
-  
-  `,
-  `
-   O
-  /|
-  
-  
-  
-  `,
-  `
-   O
-  /|\\
-  
-  
-  
-  `,
-  `
-   O
-  /|\\
-  /
-  
-  
-  `,
-  `
-   O
-  /|\\
-  / \\
-  
-  
-  `
+  ``,
+  ` O`,
+  ` O\n |`,
+  ` O\n/|`,
+  ` O\n/|\\`,
+  ` O\n/|\\\n/`,
+  ` O\n/|\\\n/ \\`
 ];
 
-// Iniciar jogo
 startBtn.addEventListener("click", () => {
   homeScreen.classList.remove("active");
   gameScreen.classList.add("active");
-
   startGame();
+});
+
+resetBtn.addEventListener("click", () => {
+  gameOverScreen.classList.add("hidden");
+  startGame();
+});
+
+homeBtn.addEventListener("click", () => {
+  gameOverScreen.classList.add("hidden");
+  gameScreen.classList.remove("active");
+  homeScreen.classList.add("active");
 });
 
 function startGame() {
@@ -104,7 +77,6 @@ function renderHangman() {
 
 function renderKeyboard() {
   bottomBar.innerHTML = "";
-
   const keyboard = document.createElement("div");
   keyboard.classList.add("keyboard");
 
@@ -137,12 +109,10 @@ function handleLetterClick(letter, keyElement) {
     });
 
     renderWord();
-
     checkWin();
   } else {
     wrongGuesses++;
     renderHangman();
-
     checkLoss();
   }
 
@@ -152,13 +122,25 @@ function handleLetterClick(letter, keyElement) {
 function checkWin() {
   if (!revealedLetters.includes("_")) {
     gameOver = true;
-    setTimeout(() => alert("Você venceu!"), 100);
+    showGameOver(true);
   }
 }
 
 function checkLoss() {
   if (wrongGuesses === 6) {
     gameOver = true;
-    setTimeout(() => alert(`Game Over! A palavra era: ${selectedWord}`), 100);
+    showGameOver(false);
+  }
+}
+
+function showGameOver(win) {
+  gameOverScreen.classList.remove("hidden");
+
+  if (win) {
+    gameResult.textContent = "Você venceu!";
+    finalWord.textContent = "";
+  } else {
+    gameResult.textContent = "Game Over!";
+    finalWord.textContent = `Palavra: ${selectedWord}`;
   }
 }
