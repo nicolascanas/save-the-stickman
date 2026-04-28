@@ -12,6 +12,7 @@ const words = ["JAVASCRIPT", "PROGRAMACAO", "DESENVOLVIMENTO", "COMPUTADOR"];
 let selectedWord = "";
 let revealedLetters = [];
 let usedLetters = [];
+let wrongGuesses = 0;
 
 // Iniciar jogo
 startBtn.addEventListener("click", () => {
@@ -25,6 +26,7 @@ function startGame() {
   selectedWord = words[Math.floor(Math.random() * words.length)];
   revealedLetters = selectedWord.split("").map(() => "_");
   usedLetters = [];
+  wrongGuesses = 0;
 
   renderWord();
   renderKeyboard();
@@ -66,7 +68,20 @@ function handleLetterClick(letter, keyElement) {
   usedLetters.push(letter);
   keyElement.classList.add("used");
 
-  renderUsedLetters();
+  if (selectedWord.includes(letter)) {
+    // Acerto → revelar letras
+    selectedWord.split("").forEach((char, index) => {
+      if (char === letter) {
+        revealedLetters[index] = letter;
+      }
+    });
 
-  // Lógica de acerto/erro virá no próximo passo
+    renderWord();
+  } else {
+    // Erro
+    wrongGuesses++;
+    console.log("Erros:", wrongGuesses);
+  }
+
+  renderUsedLetters();
 }

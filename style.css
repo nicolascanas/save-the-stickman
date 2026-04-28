@@ -48,7 +48,6 @@ button {
   margin-bottom: 20px;
 }
 
-/* Barra inferior */
 #bottom-bar {
   position: absolute;
   bottom: 0;
@@ -59,7 +58,6 @@ button {
   text-align: center;
 }
 
-/* Teclado */
 .keyboard {
   display: flex;
   flex-wrap: wrap;
