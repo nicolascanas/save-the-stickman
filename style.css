@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: black;
+  color: white;
+  height: 100vh;
+}
+
+/* Controle de telas */
+.screen {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Botão */
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Área do jogo */
+#game-container {
+  text-align: center;
+}
+
+#hangman {
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+#word-display {
+  font-size: 32px;
+  letter-spacing: 10px;
+  margin-bottom: 20px;
+}
+
+#used-letters {
+  margin-bottom: 20px;
+}
+
+/* Barra inferior */
+#bottom-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  color: black;
+  padding: 15px;
+  text-align: center;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo da Forca</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Tela inicial -->
+  <div id="home-screen" class="screen active">
+    <h1>Jogo da Forca</h1>
+    <button id="start-btn">Start</button>
+  </div>
+
+  <!-- Tela do jogo -->
+  <div id="game-screen" class="screen">
+    <div id="game-container">
+      
+      <!-- Área da forca -->
+      <div id="hangman">
+        <!-- Desenho será feito via JS depois -->
+      </div>
+
+      <!-- Palavra -->
+      <div id="word-display"></div>
+
+      <!-- Letras usadas -->
+      <div id="used-letters">
+        <h3>Letras usadas:</h3>
+        <span id="letters-list"></span>
+      </div>
+
+    </div>
+
+    <!-- Barra inferior -->
+    <div id="bottom-bar">
+      <!-- Letras aparecerão aqui depois -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
