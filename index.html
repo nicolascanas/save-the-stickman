@@ -2,57 +2,72 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Jogo da Forca</title>
+  <title>Hangman</title>
+
+  <!-- Fonte moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Home -->
   <div id="home-screen" class="screen active">
-    <h1>Jogo da Forca</h1>
+    <div class="card">
+      <h1>Hangman</h1>
 
-    <p>Escolha uma categoria:</p>
-    <div id="category-buttons">
-      <button data-category="tecnologia">Tecnologia</button>
-      <button data-category="animais">Animais</button>
-      <button data-category="paises">Países</button>
+      <p class="subtitle">Escolha uma categoria</p>
+
+      <div id="category-buttons">
+        <button data-category="tecnologia">Tecnologia</button>
+        <button data-category="animais">Animais</button>
+        <button data-category="paises">Países</button>
+      </div>
+
+      <div class="score-box">
+        Pontuação: <span id="score-display">0</span>
+      </div>
+
+      <div class="leaderboard-box">
+        <h3>Ranking</h3>
+        <ul id="leaderboard"></ul>
+      </div>
     </div>
-
-    <h3 id="score-display">Pontuação: 0</h3>
-
-    <h3>🏆 Ranking</h3>
-    <ul id="leaderboard"></ul>
   </div>
 
-  <!-- Game -->
   <div id="game-screen" class="screen">
-    <h2 id="category-title"></h2>
-    <h3 id="score-display-game">Pontuação: 0</h3>
+    <div class="card game-card">
 
-    <div id="game-container">
+      <div class="top-bar">
+        <span id="category-title"></span>
+        <span id="score-display-game"></span>
+      </div>
+
       <div id="hangman"></div>
       <div id="word-display"></div>
 
       <div id="used-letters">
-        <h3>Letras usadas:</h3>
         <span id="letters-list"></span>
       </div>
+
     </div>
 
     <div id="bottom-bar"></div>
   </div>
 
-  <!-- Game Over -->
   <div id="game-over-screen" class="overlay hidden">
-    <h2 id="game-result"></h2>
-    <p id="final-word"></p>
-    <p id="final-score"></p>
+    <div class="modal">
+      <h2 id="game-result"></h2>
+      <p id="final-word"></p>
+      <p id="final-score"></p>
 
-    <input type="text" id="player-name" placeholder="Seu nome" />
+      <input type="text" id="player-name" placeholder="Seu nome" />
 
-    <button id="save-score-btn">Salvar pontuação</button>
-    <button id="reset-btn">Jogar novamente</button>
-    <button id="home-btn">Voltar para Home</button>
+      <div class="actions">
+        <button id="save-score-btn">Salvar</button>
+        <button id="reset-btn">Jogar novamente</button>
+        <button id="home-btn">Home</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
