@@ -10,11 +10,6 @@ const scoreDisplay = document.getElementById("score-display");
 const scoreDisplayGame = document.getElementById("score-display-game");
 const finalScore = document.getElementById("final-score");
 
-const leaderboardElement = document.getElementById("leaderboard");
-
-const playerNameInput = document.getElementById("player-name");
-const saveScoreBtn = document.getElementById("save-score-btn");
-
 const gameOverScreen = document.getElementById("game-over-screen");
 const gameResult = document.getElementById("game-result");
 const finalWord = document.getElementById("final-word");
@@ -38,9 +33,6 @@ let gameOver = false;
 
 let score = Number(localStorage.getItem("hangmanScore")) || 0;
 
-// 🎯 NOVO: leaderboard
-let leaderboard = JSON.parse(localStorage.getItem("hangmanLeaderboard")) || [];
-
 const hangmanStages = [
   ``,
   ` O`,
@@ -51,40 +43,15 @@ const hangmanStages = [
   ` O\n/|\\\n/ \\`
 ];
 
+// Atualiza score
 function updateScoreDisplay() {
-  scoreDisplay.textContent = `Pontuação: ${score}`;
-  scoreDisplayGame.textContent = `Pontuação: ${score}`;
+  scoreDisplay.textContent = score;
+  scoreDisplayGame.textContent = `Score: ${score}`;
 }
 
 function saveScore() {
   localStorage.setItem("hangmanScore", score);
 }
-
-// 🎯 render ranking
-function renderLeaderboard() {
-  leaderboardElement.innerHTML = "";
-
-  leaderboard.forEach(entry => {
-    const li = document.createElement("li");
-    li.textContent = `${entry.name} - ${entry.score}`;
-    leaderboardElement.appendChild(li);
-  });
-}
-
-// 🎯 salvar no ranking
-saveScoreBtn.addEventListener("click", () => {
-  const name = playerNameInput.value.trim() || "Jogador";
-
-  leaderboard.push({ name, score });
-
-  leaderboard.sort((a, b) => b.score - a.score);
-  leaderboard = leaderboard.slice(0, 5);
-
-  localStorage.setItem("hangmanLeaderboard", JSON.stringify(leaderboard));
-
-  renderLeaderboard();
-  playerNameInput.value = "";
-});
 
 categoryButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -105,7 +72,6 @@ homeBtn.addEventListener("click", () => {
   gameScreen.classList.remove("active");
   homeScreen.classList.add("active");
   updateScoreDisplay();
-  renderLeaderboard();
 });
 
 function startGame() {
@@ -126,8 +92,21 @@ function startGame() {
   updateScoreDisplay();
 }
 
+// 🎯 MICROINTERAÇÃO APLICADA AQUI
+let wordAnimationTimeout;
+
 function renderWord() {
   wordDisplay.textContent = revealedLetters.join(" ");
+
+  // Reset animação se já estiver rodando
+  clearTimeout(wordAnimationTimeout);
+
+  wordDisplay.style.transition = "transform 0.15s ease";
+  wordDisplay.style.transform = "scale(1.05)";
+
+  wordAnimationTimeout = setTimeout(() => {
+    wordDisplay.style.transform = "scale(1)";
+  }, 150);
 }
 
 function renderUsedLetters() {
@@ -238,9 +217,8 @@ function hideOverlay() {
   gameOverScreen.classList.remove("show");
   setTimeout(() => {
     gameOverScreen.classList.add("hidden");
-  }, 400);
+  }, 300);
 }
 
-// inicialização
+// init
 updateScoreDisplay();
-renderLeaderboard();

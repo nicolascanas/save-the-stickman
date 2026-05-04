@@ -1,12 +1,10 @@
 :root {
-  --bg: #0b0f19;
-  --panel: #111827;
-  --border: #1f2937;
-  --primary: #6366f1;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --success: #22c55e;
-  --error: #ef4444;
+  --bg: #000000;
+  --panel: #0a0a0a;
+  --border: #1a1a1a;
+  --text: #ffffff;
+  --muted: #888888;
+  --accent: #ffffff;
 }
 
 * {
@@ -28,13 +26,25 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
+  padding: 0 20px;
+
+  animation: fadeIn 0.8s ease;
+}
+
+.logo {
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.header-score {
+  color: var(--muted);
 }
 
 /* SCREENS */
 .screen {
   display: none;
   padding: 20px;
+  animation: fadeIn 0.6s ease;
 }
 
 .screen.active {
@@ -44,42 +54,38 @@ body {
 /* CARD */
 .card {
   background: var(--panel);
-  padding: 20px;
+  border: 1px solid var(--border);
+  padding: 24px;
   border-radius: 12px;
+
+  animation: slideUp 0.6s ease;
 }
 
-/* GAME LAYOUT (mobile first) */
+/* GAME */
 .game-layout {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.game-main {
+.game-main, .game-side {
   background: var(--panel);
+  border: 1px solid var(--border);
   padding: 20px;
   border-radius: 12px;
-  text-align: center;
-}
 
-.game-side {
-  background: var(--panel);
-  padding: 15px;
-  border-radius: 12px;
+  animation: fadeIn 0.6s ease;
 }
 
 /* WORD */
 #word-display {
-  font-size: 24px;
-  letter-spacing: 6px;
-  margin: 15px 0;
+  font-size: 26px;
+  letter-spacing: 8px;
+  margin: 20px 0;
+  transition: all 0.3s ease;
 }
 
 /* KEYBOARD */
-#bottom-bar {
-  margin-top: 20px;
-}
-
 .keyboard {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -88,60 +94,109 @@ body {
 
 .key {
   padding: 12px;
-  background: var(--panel);
   border-radius: 8px;
+  border: 1px solid var(--border);
   text-align: center;
   cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
-.key.correct { background: var(--success); }
-.key.wrong { background: var(--error); }
-.key.used { opacity: 0.5; }
+/* Hover premium */
+.key:hover {
+  background: white;
+  color: black;
+  transform: translateY(-2px);
+}
+
+/* Estados */
+.key.correct {
+  background: white;
+  color: black;
+}
+
+.key.wrong {
+  opacity: 0.2;
+}
+
+.key.used {
+  opacity: 0.3;
+}
+
+/* BUTTONS */
+button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  background: white;
+  color: black;
+  transform: translateY(-1px);
+}
 
 /* MODAL */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+
+  animation: scaleIn 0.4s ease;
 }
 
 .hidden {
   display: none;
 }
 
-.modal {
-  background: var(--panel);
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* DESKTOP */
 @media (min-width: 768px) {
-  .screen {
-    display: none;
-    height: calc(100vh - 60px);
-    justify-content: center;
-    align-items: center;
-  }
-
-  .screen.active {
-    display: flex;
-  }
-
   .game-layout {
     flex-direction: row;
-  }
-
-  .game-main {
-    width: 400px;
-  }
-
-  .game-side {
-    width: 200px;
   }
 
   .keyboard {
